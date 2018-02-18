@@ -1,0 +1,31 @@
+---
+title: 'R’a başlangıç: Neden tidyverse?'
+author: "Hazel Kavili"
+date: "2/18/2018"
+output: html_document
+---
+
+Henüz başlıkta iki yeni terimle karşı karşıyayız: *R* ve *tidyverse*. 
+Veri Defteri için hazırladığım bu ilk yazımda, neden yeni başlayanlara tidyverse öğrettiğimizden, tidyverse'ün nimetlerinden ve *dplyr* ile uygulamalardan bahsedeceğim.
+
+Günümüzde veri bilimiyle uğraşan birçok insanın karşısında satır ve sütunlardan oluşan tablolar mevcut. Bu tabloları da bazen API'lar, bazen Excel ya da csv dosyaları, bazen de veri tabanları sayesinde elde ediyoruz (tabi sadece bunlarla da sınırlı değil). Bunlar kimi zaman düzenli, ama çoğu zaman düzenleme isteyen tablolar. Tidyverse de burada devreye giriyor: bize düzenlemeleri kolay bir şekilde yapabilmemizi sağlayan, R'ın birçok paketini içinde bulunduran büyükçe bir paket. Tabi ki sadece düzenlemeler değil, görselleştirmeler, modellemeler, hızlı iterasyonlar da yapabiliyoruz.
+
+R dünyasında bu tabloları *data frame* veya şu anda yaygın halde kullanılan *tibble* olarak adlandırıyoruz:
+
+Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda örnek bir data frame var:
+![](/Users/hazel/Desktop/VeriDefteriNotlar/VeriDefteri/dataframe.png)
+Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek adına tidyverse yöntemleriyle yazılarıma devam edeceğim.
+
+### dplyr'a giriş
+[Bu linkten]() ulaşabileceğiniz veri setimizi ilk önce çalışma alanımıza alalım:
+
+```{r}
+xData <- read.csv() 
+```
+
+read.csv(), read.xlsx, read.table gibi fonksiyonlar verinizi çalışma alanınıza almanızı sağlar. *<-* operatörü, atama operatörüdür. Burada, veri setimizi kaynağından okuyup, atama operatörü ile *xData* isimli bir değişkene atamış olduk.
+
+
+
+
+
