@@ -17,7 +17,7 @@ Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda dü
 Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek adına tidyverse yöntemleriyle yazılarıma devam edeceğim.
 
 ### dplyr'a giriş
-R'ın kendi içerisinde çalışabileceğiniz hazır veri setleri mevcut. Ama bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada]().  
+R'ın kendi içerisinde çalışabileceğiniz hazır veri setleri mevcut. Ama bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada](https://github.com/UniversalTourist/VeriDefteriNotlar/tree/master/VeriDefteri).  
 
 ```{r, warning=FALSE, message=FALSE}
 filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",") 

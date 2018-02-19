@@ -132,7 +132,7 @@ $(document).ready(function () {
 <p>Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum <a href="https://rladies.org">R-Ladies</a> topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek adına tidyverse yöntemleriyle yazılarıma devam edeceğim.</p>
 <div id="dplyra-giris" class="section level3">
 <h3>dplyr’a giriş</h3>
-<p>R’ın kendi içerisinde çalışabileceğiniz hazır veri setleri mevcut. Ama bu bölümde size <em>movies</em> veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. <em>movies</em> veri setini indireceğiniz <a href>link burada</a>.</p>
+<p>R’ın kendi içerisinde çalışabileceğiniz hazır veri setleri mevcut. Ama bu bölümde size <em>movies</em> veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. <em>movies</em> veri setini indireceğiniz <a href="https://github.com/UniversalTourist/VeriDefteriNotlar/tree/master/VeriDefteri">link burada</a>.</p>
 <pre class="r"><code>filmler &lt;- read.csv(file = &quot;movies.csv&quot; , header = TRUE, sep = &quot;,&quot;) </code></pre>
 <p><code>read.csv()</code>, <code>read.xlsx()</code>, <code>read.table()</code> gibi fonksiyonlar verinizi çalışma alanınıza almanızı sağlar. <em>&lt;-</em> operatörü, atama operatörüdür. Burada, veri setimizi okuyup, atama operatörü ile <em>filmler</em> isimli bir değişkene atamış olduk.</p>
 <p>Şimdi veri setimize bir bakalım. <code>head()</code> fonksiyonu bize veri setimizin ilk 6 gözlemini, <code>tail()</code> fonksiyonu son 6 gözlemini veriyor. Ancak <em>n</em> argümanını değiştirerek istediğiniz kadar gözlemi getirebilirsiniz:</p>
@@ -170,8 +170,19 @@ filmler_ülkeler</code></pre>
 ## 1     USA 237000000        7.9
 ## 2     USA 300000000        7.1
 ## 3      UK 245000000        6.8</code></pre>
+<p>Seçmek istediğiniz kolonların sayı sırasını biliyorsanız sayı değerlerini yazabilir, setinizde istemediğiniz değişkeni önüne eksi (-) yazarak çıkarabilirsiniz:</p>
+<pre class="r"><code>filmler_ülkeler &lt;- filmler %&gt;% select(2:6, -4) %&gt;% head(n=3)
+filmler_ülkeler</code></pre>
+<pre><code>##   duration     actor_2_name    actor_1_name
+## 1      178 Joel David Moore     CCH Pounder
+## 2      169    Orlando Bloom     Johnny Depp
+## 3      148     Rory Kinnear Christoph Waltz
+##                                 movie_title
+## 1                                   Avatar 
+## 2 Pirates of the Caribbean: At World's End 
+## 3                                  Spectre </code></pre>
 <p>Burada yeni bir operatörle karşı karşıyayız: <em>%&gt;%</em> Buna <em>pipe</em> operatörü deniyor, biz de <em>zincir</em> operatörü demeyi tercih ediyoruz. Bu operatör soldakinin çıktısını, sağdakine girdi olarak veriyor. Örneğin yukarıda <em>filmler</em> veri setini alıyor, <em>country, budget, imdb_score</em> değişkenlerini seçiyor. Ve yeni bir değişkene, <em>filmler_ülkeler</em>, değişkenine atama yapıyor.</p>
-<p>Pekiyi gözlemlerin içinden bazılarını <em>filtrelemek</em> istiyorsanız, örneğin Christopher Nolan’ın imdb puanı 7’den büyük olan filmlerini görmek istiyorsunuz, bu durumda kullanacağınız fonksiyon: <code>filter()</code>:</p>
+<p>Pekiyi gözlemlerin içinden bazılarını <em>filtrelemek</em> istiyorsanız, <em>örneğin Christopher Nolan’ın imdb puanı 7’den büyük olan filmlerini</em> görmek istiyorsunuz, bu durumda kullanacağınız fonksiyon: <code>filter()</code>:</p>
 <pre class="r"><code>filmler_puanlar &lt;- filmler %&gt;% filter(imdb_score &gt; 7, director_name == &quot;Christopher Nolan&quot;)
 
 filmler_puanlar</code></pre>
@@ -236,6 +247,7 @@ head(filmler_butce)</code></pre>
 ## 4                              John Carter         6.6 263700000
 ## 5                                  Tangled         7.8 260000000
 ## 6                             Spider-Man 3         6.2 258000000</code></pre>
+<p>Bir sonraki yazıda <code>mutate()</code>, <code>group_by()</code> ve <code>summarise()</code> fonksiyonlarını aynı veri seti üzerinden anlatacağım.</p>
 </div>
 
 
