@@ -5,27 +5,110 @@ date: "2/18/2018"
 output: html_document
 ---
 
-Henüz başlıkta iki yeni terimle karşı karşıyayız: *R* ve *tidyverse*. 
-Veri Defteri için hazırladığım bu ilk yazımda, neden yeni başlayanlara tidyverse öğrettiğimizden, tidyverse'ün nimetlerinden ve *dplyr* ile uygulamalardan bahsedeceğim.
+Henüz başlıkta iki yeni terimle karşı karşıyayız: *R* ve *tidyverse*. Veri Defteri için hazırladığım bu ilk yazımda, neden yeni başlayanlara tidyverse öğrettiğimizden, tidyverse'ün nimetlerinden ve *dplyr* ile uygulamalardan bahsedeceğim.
 
-Günümüzde veri bilimiyle uğraşan birçok insanın karşısında satır ve sütunlardan oluşan tablolar mevcut. Bu tabloları da bazen API'lar, bazen Excel ya da csv dosyaları, bazen de veri tabanları sayesinde elde ediyoruz (tabi sadece bunlarla da sınırlı değil). Bunlar kimi zaman düzenli, ama çoğu zaman düzenleme isteyen tablolar. Tidyverse de burada devreye giriyor: bize düzenlemeleri kolay bir şekilde yapabilmemizi sağlayan, R'ın birçok paketini içinde bulunduran büyükçe bir paket. Tabi ki sadece düzenlemeler değil, görselleştirmeler, modellemeler, hızlı iterasyonlar da yapabiliyoruz.
+Günümüzde veri bilimiyle uğraşan birçok insanın karşısında satırlar ve sütunlardan oluşan tablolar mevcut. Bu tabloları bazen API'lar, bazen Excel, csv, txt dosyaları, bazen de veri tabanları sayesinde elde ediyoruz (tabi sadece bunlarla da sınırlı değil). Bunlar kimi zaman düzenli, ama çoğu zaman düzenleme isteyen tablolar. Tidyverse de burada devreye giriyor: bize düzenlemeleri kolay bir şekilde yapabilmemizi sağlayan, R'ın birçok paketini içinde bulunduran büyükçe bir paket. Tabi ki sadece düzenlemeler değil, görselleştirmeler, modellemeler, hızlı iterasyonlar da yapabiliyoruz.
 
 R dünyasında bu tabloları *data frame* veya şu anda yaygın halde kullanılan *tibble* olarak adlandırıyoruz:
 
-Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda örnek bir data frame var:
+Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda düzenli, örnek bir data frame var:
 ![](/Users/hazel/Desktop/VeriDefteriNotlar/VeriDefteri/dataframe.png)
+
 Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek adına tidyverse yöntemleriyle yazılarıma devam edeceğim.
 
 ### dplyr'a giriş
-[Bu linkten]() ulaşabileceğiniz veri setimizi ilk önce çalışma alanımıza alalım:
+R'ın kendi içerisinde çalışabileceğiniz hazır veri setleri mevcut. Ama bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada]().  
 
-```{r}
-xData <- read.csv() 
+```{r, warning=FALSE, message=FALSE}
+filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",") 
 ```
 
-read.csv(), read.xlsx, read.table gibi fonksiyonlar verinizi çalışma alanınıza almanızı sağlar. *<-* operatörü, atama operatörüdür. Burada, veri setimizi kaynağından okuyup, atama operatörü ile *xData* isimli bir değişkene atamış olduk.
+`read.csv()`, `read.xlsx()`, `read.table()` gibi fonksiyonlar verinizi çalışma alanınıza almanızı sağlar. *<-* operatörü, atama operatörüdür. Burada, veri setimizi okuyup, atama operatörü ile *filmler* isimli bir değişkene atamış olduk.
 
+Şimdi veri setimize bir bakalım. `head()` fonksiyonu bize veri setimizin ilk 6 gözlemini, `tail()` fonksiyonu son 6 gözlemini veriyor. Ancak *n* argümanını değiştirerek istediğiniz kadar gözlemi getirebilirsiniz:
 
+```{r, warning=FALSE, message=FALSE }
+head(filmler, n = 5)
+```
 
+```{r, eval = FALSE,warning=FALSE, message=FALSE }
+tail(filmler, n = 5)
+```
 
+`str()`, `summary()` ve `dim()` fonksiyonları da veri setinizi tanımanıza yardımcı olacak fonksiyonlardır.
 
+```{r, eval = FALSE, warning=FALSE, message=FALSE }
+str(filmler)
+```
+
+```{r, eval = FALSE, warning=FALSE, message=FALSE }
+summary(filmler)
+```
+
+```{r, eval = FALSE, warning=FALSE, message=FALSE}
+dim(filmler)
+```
+
+Veri setimizi biraz tanıdıktan sonra gelelim dplyr'ın nimetlerine. İlk önce *tidyverse* paketimizi yükleyelim ve kullanılır hale getirelim:
+
+```{r, eval = FALSE, warning=FALSE, message=FALSE}
+install.packages("tidyverse")
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+Örneğin veri setinizdeki 13 değişkenle iş yapmak yerine, sadece bazı değişkenleri *seçmek* istiyorsunuz. Kullanacağınız fonksiyon: `select()`
+
+```{r, warning=FALSE, message=FALSE}
+filmler_ülkeler <- filmler %>% select(country, budget, imdb_score) %>% head(n=3)
+filmler_ülkeler
+```
+
+Seçmek istediğiniz kolonların sayı sırasını biliyorsanız sayı değerlerini yazabilir, setinizde istemediğiniz değişkeni önüne eksi (-) yazarak çıkarabilirsiniz:
+
+```{r, warning=FALSE, message=FALSE}
+filmler_ülkeler <- filmler %>% select(2:6, -4) %>% head(n=3)
+filmler_ülkeler
+```
+
+Burada yeni bir operatörle karşı karşıyayız: *%>%* 
+Buna *pipe* operatörü deniyor, biz de *zincir* operatörü demeyi tercih ediyoruz. Bu operatör soldakinin çıktısını, sağdakine girdi olarak veriyor. Örneğin yukarıda *filmler* veri setini alıyor, *country, budget, imdb_score* değişkenlerini seçiyor. Ve yeni bir değişkene, *filmler_ülkeler*, değişkenine atama yapıyor. 
+
+Pekiyi gözlemlerin içinden bazılarını *filtrelemek* istiyorsanız, *örneğin Christopher Nolan'ın imdb puanı 7'den büyük olan filmlerini* görmek istiyorsunuz, bu durumda kullanacağınız fonksiyon: `filter()`:
+
+```{r, warning=FALSE, message=FALSE}
+filmler_puanlar <- filmler %>% filter(imdb_score > 7, director_name == "Christopher Nolan")
+
+filmler_puanlar
+```
+
+Filter fonksiyonu ile tüm mantıksal operatörleri kullanabilirsiniz. Öğrendiğimiz iki fonksiyonu birleştirmek gerekirse:
+
+```{r, warning=FALSE, message=FALSE}
+filmler_UK <- filmler %>% select(country, title_year, imdb_score) %>% 
+  filter (imdb_score >= 6 & country == "UK") 
+
+head(filmler_UK)
+```
+
+Bu yazıdaki son fonksiyon da gözlemlerinizi, seçeceğiniz değişkene göre sıralamak istediğinizde kullanacağanız fonksyion: `arrange()`
+
+```{r, warning=FALSE, message=FALSE}
+filmler_butce <- filmler %>% select(movie_title, imdb_score, budget) %>% arrange(budget)
+
+head(filmler_butce)
+
+```
+
+Eğer artan sıralamak istiyorsanız fazladan bir şey yazmanız gerekmiyor, ama azalan sıralamak istiyorsanız:
+
+```{r, warning=FALSE, message=FALSE}
+filmler_butce <- filmler %>% select(movie_title, imdb_score, budget) %>% arrange(desc(budget))
+
+head(filmler_butce)
+
+```
+
+Bir sonraki yazıda `mutate()`, `group_by()` ve `summarise()` fonksiyonlarını aynı veri seti üzerinden anlatacağım.
