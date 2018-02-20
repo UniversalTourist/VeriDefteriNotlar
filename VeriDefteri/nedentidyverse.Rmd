@@ -15,7 +15,7 @@ Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda dü
 
 ![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/dataframe.png?raw=true)
 
-Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek adına tidyverse yöntemleriyle yazılarıma devam edeceğim. Nedenlerine sevgili [Mine Çetintaka-Rundell](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user) useR!2017'deki sunumunda çeşitli örneklerle değinmişti. Örneğin görselleştirme yapmak istediğimizde, ilk örnek R'ın *base* yani kendi içerisinde hazır fonksyionlarıyla, ikinci örnek ise ggplot2 ile -tidyverse'ün en çok kullanılan görselleştirme paketi-  yapıldı. Bunları kendi çalışma alanınızda da deneyebilirsiniz, *mtcars* R'ın içinde hazır bir veri seti ve iki örnek de aynı grafiği verecektir. 
+Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek adına tidyverse yöntemleriyle yazılarıma devam edeceğim. Nedenlerine sevgili [Mine Çetintaka-Rundell](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user) useR!2017'deki sunumunda çeşitli örneklerle değinmişti. Örneğin görselleştirme yapmak istediğimizde, iki şekilde de yapabiliriz: ilk örnek R'ın *base* yani kendi içerisinde hazır fonksyionlarıyla, ikinci örnek ise ggplot2 ile -tidyverse'ün en çok kullanılan görselleştirme paketi-  yapıldı. Bunları kendi çalışma alanınızda da deneyebilirsiniz, *mtcars* R'ın içinde hazır bir veri seti ve iki örnek de aynı grafiği verecektir. 
 
 ```{r, eval = FALSE, warning=FALSE, message=FALSE}
 mtcars$trans_color <- 
@@ -42,10 +42,10 @@ p1 <- ggplot(mtcars,
 ggsave("plots/scatter_tidy.pdf", p1, width = 5, height = 3)
 ```
 
-Tidyverse yöntemiyle hazırlanan grafiğin, yeni başlayanlar için ideal olduğu söylenebilir: daha okunur ve adım adım takip edilir.
+Tidyverse yöntemiyle hazırlanan grafiğin, yeni başlayanlar için ideal olduğu söylenebilir: daha okunur ve adım adım takip edilir. 
 
 ### dplyr'a giriş
-R'ın kendi içerisinde çalışabileceğiniz hazır veri setleri mevcut. Ama bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada](https://www.dropbox.com/s/009shbt1l8kvq0e/movies.csv?dl=0).  
+Bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada](https://www.dropbox.com/s/009shbt1l8kvq0e/movies.csv?dl=0).  
 
 ```{r, warning=FALSE, message=FALSE}
 filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",") 
