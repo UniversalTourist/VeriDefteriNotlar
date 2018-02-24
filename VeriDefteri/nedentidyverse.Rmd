@@ -1,83 +1,23 @@
 ---
-title: 'R’a başlangıç: Neden tidyverse?'
+title: 'Tidyverse'
 author: "Hazel Kavili"
 date: "2/18/2018"
 output: html_document
 ---
 
-Henüz başlıkta iki yeni terimle karşı karşıyayız: *R* ve *tidyverse*. Veri Defteri için hazırladığım bu ilk yazımda, neden yeni başlayanlara tidyverse öğrettiğimizden, tidyverse'ün nimetlerinden ve *dplyr* ile uygulamalardan bahsedeceğim.
+Veri bilimiyle uğraşan birçok insanın karşısında satırlar ve sütunlardan oluşan tablolar mevcut. Bu tabloları bazen API'lar, bazen Excel, csv, txt dosyaları, bazen de veri tabanları sayesinde elde ediyoruz (tabi sadece bunlarla da sınırlı değil). Bunlar kimi zaman düzenli, ama çoğu zaman düzenleme (temizlik) isteyen tablolar. Tidyverse de burada devreye giriyor: bize düzenlemeleri, görselleştirmeleri, modellemeleri kolay bir şekilde yapabilmemizi sağlayan, R'ın birçok paketini içinde bulunduran büyükçe bir paket. Hepsiyle beraber ve en önemlisi Tidyverse bize bir iş akışı (workflow) sunar. Veri bilimi ile uğraşanların sistematik bir şekilde ilerlemesine, işlemler arasında bağlantıların kolay kurulup anlaşılmasına yardımcı olur. Aşağıdaki şemada, tidyverse'ün sağladığı akışı ve kullanabileceğiniz bazı paketleri görebilirsiniz:
 
-Günümüzde veri bilimiyle uğraşan birçok insanın karşısında satırlar ve sütunlardan oluşan tablolar mevcut. Bu tabloları bazen API'lar, bazen Excel, csv, txt dosyaları, bazen de veri tabanları sayesinde elde ediyoruz (tabi sadece bunlarla da sınırlı değil). Bunlar kimi zaman düzenli, ama çoğu zaman düzenleme isteyen tablolar. Tidyverse de burada devreye giriyor: bize düzenlemeleri kolay bir şekilde yapabilmemizi sağlayan, R'ın birçok paketini içinde bulunduran büyükçe bir paket. Tabi ki sadece düzenlemeler değil, görselleştirmeler, modellemeler, hızlı iterasyonlar da yapabiliyoruz.
+![]()
 
-R dünyasında bu tabloları *data frame* veya şu anda yaygın halde kullanılan *tibble* olarak adlandırıyoruz:
+Yukarıda bahsettiğimiz tabloları, R dünyasında *data frame* veya şu anda yaygın halde kullanılan *tibble* olarak adlandırıyoruz:
 
 Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda düzenli, örnek bir data frame var:
 
 ![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/dataframe.png?raw=true)
 
-Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek adına tidyverse yöntemleriyle yazılarıma devam edeceğim. Nedenlerine sevgili [Mine Çetintaka-Rundell](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user) useR!2017'deki sunumunda çeşitli örneklerle değinmişti. Örneğin görselleştirme yapmak istediğimizde, iki şekilde de yapabiliriz: ilk örnek R'ın *base* yani kendi içerisinde hazır fonksyionlarıyla, ikinci örnek ise ggplot2 ile -tidyverse'ün en çok kullanılan görselleştirme paketi-  yapıldı. Bunları kendi çalışma alanınızda da deneyebilirsiniz, *mtcars* R'ın içinde hazır bir veri seti ve iki örnek de aynı grafiği verecektir. 
+Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek adına tidyverse yöntemleriyle yazılarıma devam edeceğim. Nedenlerine sevgili [Mine Çetintaka-Rundell](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user) useR!2017'deki sunumunda çeşitli örneklerle değinmişti. Aşağıdaki örnekleri kendi çalışma alanınızda da deneyebilirsiniz, *mtcars* R'ın içinde hazır bir veri seti, arabaların benzin tüketimleriyle ve bazı fiziksel özellikleriyle ilgili. Bu iki örnek de yanı sonucu verecektir. 
 
-```{r, eval = FALSE, warning=FALSE, message=FALSE}
-mtcars$trans_color <- 
-  ifelse(mtcars$transmission == "automatic", 
-         "green", 
-         "blue")
-
-pdf("plots/scatter_base.pdf", width = 5, height = 3)
-plot(mtcars$mpg ~ mtcars$disp, 
-     col = mtcars$trans_color)
-legend("topright", 
-       legend = c("automatic", "manual"), 
-       pch = 1, col = c("green", "blue"))
-dev.off()
-```
-
-
-```{r, eval = FALSE, warning=FALSE, message=FALSE}
-p1 <- ggplot(mtcars, 
-            aes(x = disp, y = mpg, 
-                color = transmission)) + 
-  geom_point()
-
-ggsave("plots/scatter_tidy.pdf", p1, width = 5, height = 3)
-```
-
-Tidyverse yöntemiyle hazırlanan grafiğin, yeni başlayanlar için ideal olduğu söylenebilir: daha okunur ve adım adım takip edilir. 
-
-### dplyr'a giriş
-Bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada](https://www.dropbox.com/s/009shbt1l8kvq0e/movies.csv?dl=0).  
-
-```{r, warning=FALSE, message=FALSE}
-filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",") 
-```
-
-`read.csv()`, `read.xlsx()`, `read.table()` gibi fonksiyonlar verinizi çalışma alanınıza almanızı sağlar. *<-* operatörü, atama operatörüdür. Burada, veri setimizi okuyup, atama operatörü ile *filmler* isimli bir değişkene atamış olduk.
-
-Şimdi veri setimize bir bakalım. `head()` fonksiyonu bize veri setimizin ilk 6 gözlemini, `tail()` fonksiyonu son 6 gözlemini veriyor. Ancak *n* argümanını değiştirerek istediğiniz kadar gözlemi getirebilirsiniz:
-
-```{r, warning=FALSE, message=FALSE }
-head(filmler, n = 5)
-```
-
-```{r, eval = FALSE,warning=FALSE, message=FALSE }
-tail(filmler, n = 5)
-```
-
-`str()`, `summary()` ve `dim()` fonksiyonları da veri setinizi tanımanıza yardımcı olacak fonksiyonlardır.
-
-```{r, eval = FALSE, warning=FALSE, message=FALSE }
-str(filmler)
-```
-
-```{r, eval = FALSE, warning=FALSE, message=FALSE }
-summary(filmler)
-```
-
-```{r, eval = FALSE, warning=FALSE, message=FALSE}
-dim(filmler)
-```
-
-Veri setimizi biraz tanıdıktan sonra gelelim dplyr'ın nimetlerine. İlk önce *tidyverse* paketimizi yükleyelim ve kullanılır hale getirelim:
+İlk önce `install.packages("tidyverse")` ile paketi yükleyelim ve `library(tidyverse)` ile de paketi çalışır hale getirelim:
 
 ```{r, eval = FALSE, warning=FALSE, message=FALSE}
 install.packages("tidyverse")
@@ -86,6 +26,54 @@ install.packages("tidyverse")
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 ```
+
+Ardından `mtcars` veri setine şöyle bir bakalım:
+```{r}
+head(mtcars)
+```
+
+İlk önce *base* R işlemleriyle yeni bir değişken oluşturalım ve ismi `transmission` olsun. Bunu da `am` değişkenindeki 1 ve 0'lara göre yapalım: 0 olursa "automatic", 1 olursa "manual" olsun. Burada `$` işareti sizin veri setinizden bir değişken seçmenize yarar (subset yani alt kümeleme gibi düşünebilirsiniz):
+ 
+```{r}
+mtcars$transmission[mtcars$am == 0] = "automatic"
+mtcars$transmission[mtcars$am == 1] = "manual"
+```
+
+Bunu bir de tidyverse ile yapalım: `mutate` ve `case_when` 
+
+```{r}
+mtcars <- mtcars %>%
+  mutate(
+    transmission = 
+      case_when(
+        am == 0 ~ "automatic",
+        am == 1 ~ "manual"
+      )
+    )
+```
+
+### dplyr'a giriş
+Bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada](https://www.dropbox.com/s/009shbt1l8kvq0e/movies.csv?dl=0).  
+
+```{r, eval = TRUE, warning=FALSE, message=FALSE}
+filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",") 
+```
+
+`read.csv()`, `read.xlsx()`, `read.table()` gibi fonksiyonlar verinizi çalışma alanınıza almanızı sağlar. *<-* operatörü, atama operatörüdür. Burada, veri setimizi okuyup, atama operatörü ile *filmler* isimli bir değişkene atamış olduk.
+
+Şimdi veri setimize bir bakalım. `head()` fonksiyonu bize veri setimizin ilk 6 gözlemini, `tail()` fonksiyonu son 6 gözlemini veriyor. Ancak *n* argümanını değiştirerek istediğiniz kadar gözlemi getirebilirsiniz:
+
+```{r, warning=FALSE, message=FALSE}
+head(filmler, n = 5)
+```
+
+```{r, eval =FALSE, warning=FALSE, message=FALSE }
+tail(filmler, n = 5)
+```
+
+`str(filmler)`, `summary(filmler)` ve `dim(filmler)` fonksiyonlarını da çalıştırıp veri setinizi daha yakından tanıyabilirsiniz. `str` structure (yapı), `summary` özet, `dim` dimension (boyut) demektir. 
+
+Şimdi gelelim dplyr'ın nimetlerine. 
 
 Örneğin veri setinizdeki 13 değişkenle iş yapmak yerine, sadece bazı değişkenleri *seçmek* istiyorsunuz. Kullanacağınız fonksiyon: `select()`
 
@@ -127,7 +115,6 @@ Bu yazıdaki son fonksiyon da gözlemlerinizi, seçeceğiniz değişkene göre s
 filmler_butce <- filmler %>% select(movie_title, imdb_score, budget) %>% arrange(budget)
 
 head(filmler_butce)
-
 ```
 
 Eğer artan sıralamak istiyorsanız fazladan bir şey yazmanız gerekmiyor, ama azalan sıralamak istiyorsanız:
@@ -136,7 +123,6 @@ Eğer artan sıralamak istiyorsanız fazladan bir şey yazmanız gerekmiyor, ama
 filmler_butce <- filmler %>% select(movie_title, imdb_score, budget) %>% arrange(desc(budget))
 
 head(filmler_butce)
-
 ```
 
 Bir sonraki yazıda `mutate()`, `group_by()` ve `summarise()` fonksiyonlarını aynı veri seti üzerinden anlatacağım.
