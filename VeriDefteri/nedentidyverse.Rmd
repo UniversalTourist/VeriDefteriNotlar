@@ -7,7 +7,7 @@ output: html_document
 
 Veri bilimiyle uğraşan birçok insanın karşısında satırlar ve sütunlardan oluşan tablolar mevcut. Bu tabloları bazen API'lar, bazen Excel, csv, txt dosyaları, bazen de veri tabanları sayesinde elde ediyoruz (tabi sadece bunlarla da sınırlı değil). Bunlar kimi zaman düzenli, ama çoğu zaman düzenleme (temizlik) isteyen tablolar. Tidyverse de burada devreye giriyor: bize düzenlemeleri, görselleştirmeleri, modellemeleri kolay bir şekilde yapabilmemizi sağlayan, R'ın birçok paketini içinde bulunduran büyükçe bir paket. Hepsiyle beraber ve en önemlisi Tidyverse bize bir iş akışı (workflow) sunar. Veri bilimi ile uğraşanların sistematik bir şekilde ilerlemesine, işlemler arasında bağlantıların kolay kurulup anlaşılmasına yardımcı olur. Aşağıdaki şemada, tidyverse'ün sağladığı akışı ve kullanabileceğiniz bazı paketleri görebilirsiniz:
 
-![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/workflow2.png?raw=true)
+![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/workflow3.png?raw=true)
 
 
 Yukarıda bahsettiğimiz tabloları, R dünyasında *data frame* veya şu anda yaygın halde kullanılan *tibble* olarak adlandırıyoruz:
