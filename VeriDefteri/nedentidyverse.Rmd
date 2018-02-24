@@ -7,7 +7,8 @@ output: html_document
 
 Veri bilimiyle uğraşan birçok insanın karşısında satırlar ve sütunlardan oluşan tablolar mevcut. Bu tabloları bazen API'lar, bazen Excel, csv, txt dosyaları, bazen de veri tabanları sayesinde elde ediyoruz (tabi sadece bunlarla da sınırlı değil). Bunlar kimi zaman düzenli, ama çoğu zaman düzenleme (temizlik) isteyen tablolar. Tidyverse de burada devreye giriyor: bize düzenlemeleri, görselleştirmeleri, modellemeleri kolay bir şekilde yapabilmemizi sağlayan, R'ın birçok paketini içinde bulunduran büyükçe bir paket. Hepsiyle beraber ve en önemlisi Tidyverse bize bir iş akışı (workflow) sunar. Veri bilimi ile uğraşanların sistematik bir şekilde ilerlemesine, işlemler arasında bağlantıların kolay kurulup anlaşılmasına yardımcı olur. Aşağıdaki şemada, tidyverse'ün sağladığı akışı ve kullanabileceğiniz bazı paketleri görebilirsiniz:
 
-![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/workflow.png?raw=true)
+![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/workflow2.png?raw=true)
+
 
 Yukarıda bahsettiğimiz tabloları, R dünyasında *data frame* veya şu anda yaygın halde kullanılan *tibble* olarak adlandırıyoruz:
 
@@ -15,7 +16,7 @@ Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda dü
 
 ![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/dataframe.png?raw=true)
 
-Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek için tidyverse yöntemleriyle yazılarıma devam edeceğim. Nedenlerine sevgili [Mine Çetintaka-Rundell](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user) useR!2017'deki sunumunda çeşitli örneklerle değinmişti. Aşağıdaki örnekleri kendi çalışma alanınızda da deneyebilirsiniz, *mtcars* R'ın içinde hazır bir veri seti, arabaların benzin tüketimleriyle ve bazı fiziksel özellikleriyle ilgili. Bu iki örnek de yanı sonucu verecektir. 
+Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek için tidyverse yöntemleriyle yazılarıma devam edeceğim. Nedenlerine sevgili [Mine Çetintaka-Rundell](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user) useR!2017'deki sunumunda çeşitli örneklerle değinmişti. Aşağıdaki örnekleri kendi çalışma alanınızda da deneyebilirsiniz, *mtcars* R'ın içinde hazır bir veri seti, arabaların benzin tüketimleriyle ve bazı fiziksel özellikleriyle ilgili. Bu iki örnek de aynı sonucu verecektir. 
 
 İlk önce `install.packages("tidyverse")` ile paketi yükleyelim ve `library(tidyverse)` ile de paketi çalışır hale getirelim:
 
@@ -56,6 +57,8 @@ mtcars <- mtcars %>%
 `mutate` dönüştürmek demek. `case_when` ise sizi `if` ve `else if` yapılarını uzun uzun yazmaktan kurtarır. İkinci yazım şekli adım adım daha okunabilir, kolay yazılabilir ve takip edilebilir. 
 
 ### dplyr'a giriş
+dplyr, veri manipülasyonu işlemlerini yapabileceğiniz, birçok temel problemi çözen ve bunları aklıda kalıcı fiillerle yapan bir paket.  `select`,  `filter`,  `muatate`,  `group_by`,  `arrange`,  `summarise` bunlardan birkaçı. Ayrıntılı bilgiye [bu sayfadan](http://dplyr.tidyverse.org) ulaşabilirsiniz.
+
 Bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada](https://www.dropbox.com/s/009shbt1l8kvq0e/movies.csv?dl=0).  
 
 ```{r, eval = TRUE, warning=FALSE, message=FALSE}
