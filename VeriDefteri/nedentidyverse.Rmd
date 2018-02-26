@@ -10,7 +10,7 @@ Veri bilimiyle uğraşan birçok insanın karşısında satırlar ve sütunlarda
 ![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/workflow3.png?raw=true)
 
 
-Yukarıda bahsettiğimiz tabloları, R dünyasında *data frame* veya şu anda yaygın halde kullanılan *tibble* olarak adlandırıyoruz:
+Yukarıda bahsedilen tabloları, R dünyasında *data frame* veya şu anda yaygın halde kullanılan *tibble* olarak adlandırıyoruz:
 
 Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda düzenli, örnek bir data frame var:
 
@@ -116,7 +116,7 @@ filmler_UK <- filmler %>% select(country, title_year, imdb_score) %>%
 head(filmler_UK)
 ```
 
-Bu yazıdaki son fonksiyon da gözlemlerinizi, seçeceğiniz değişkene göre sıralamak istediğinizde kullanacağanız fonksyion: `arrange()`
+Bu yazıdaki son fonksiyon da gözlemlerinizi, seçeceğiniz değişkene göre sıralamak istediğiniz zaman kullanacağınız fonksiyon: `arrange()`
 
 ```{r, warning=FALSE, message=FALSE}
 filmler_butce <- filmler %>% select(movie_title, imdb_score, budget) %>% arrange(budget)
