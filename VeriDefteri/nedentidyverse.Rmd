@@ -16,7 +16,7 @@ Satırlarda gözlemler, sütunlarda değişkenler olacak şekilde aşağıda dü
 
 ![](https://github.com/UniversalTourist/VeriDefteriNotlar/blob/master/VeriDefteri/dataframe.png?raw=true)
 
-Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğundaki veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek için tidyverse yöntemleriyle yazılarıma devam edeceğim. Nedenlerine sevgili [Mine Çetintaka-Rundell](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user) useR!2017'deki sunumunda çeşitli örneklerle değinmişti. Aşağıdaki örnekleri kendi çalışma alanınızda da deneyebilirsiniz, *mtcars* R'ın içinde hazır bir veri seti, arabaların benzin tüketimleriyle ve bazı fiziksel özellikleriyle ilgili. Bu iki örnek de aynı sonucu verecektir. 
+Son yıllarda hem okuduklarımdan hem gittiğim konferanslardan hem de içinde bulunduğum [R-Ladies](https://rladies.org) topluluğunda veri bilimi eğitimi veren arkadaşlarımızdan edindiğim bilgiler doğrultusunda, bu işe yeni başlayanlara bu alanı sevdirmek için tidyverse yöntemleriyle yazılarıma devam edeceğim. Nedenlerine sevgili [Mine Çetintaka-Rundell](https://github.com/mine-cetinkaya-rundel/2017-07-05-teach-ds-to-new-user) useR!2017'deki sunumunda çeşitli örneklerle değinmişti. Aşağıdaki örnekleri kendi çalışma alanınızda da deneyebilirsiniz, *mtcars* R'ın içinde hazır bir veri seti, arabaların benzin tüketimleriyle ve bazı fiziksel özellikleriyle ilgili. Bu iki örnek de aynı sonucu verecektir. 
 
 İlk önce `install.packages("tidyverse")` ile paketi yükleyelim ve `library(tidyverse)` ile de paketi çalışır hale getirelim:
 
@@ -59,13 +59,14 @@ mtcars <- mtcars %>%
 ### dplyr'a giriş
 dplyr, veri manipülasyonu işlemlerini yapabileceğiniz, birçok temel problemi çözen ve bunları aklıda kalıcı fiillerle yapan bir paket.  `select`,  `filter`,  `muatate`,  `group_by`,  `arrange`,  `summarise` bunlardan birkaçı. Ayrıntılı bilgiye [bu sayfadan](http://dplyr.tidyverse.org) ulaşabilirsiniz.
 
-Bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indireceğiniz [link burada](https://www.dropbox.com/s/009shbt1l8kvq0e/movies.csv?dl=0).  
+Bu bölümde size *movies* veri setini çalışma alanınıza indirip, okuyup, bir değişkene atadıktan sonra işlenmeye hazır hale getirmeyi anlatacağım. *movies* veri setini indirebileceğiniz [link burada](https://www.dropbox.com/s/009shbt1l8kvq0e/movies.csv?dl=0).  
 
 ```{r, eval = TRUE, warning=FALSE, message=FALSE}
 filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",") 
 ```
 
-`read.csv()`, `read.xlsx()`, `read.table()` gibi fonksiyonlar verinizi çalışma alanınıza almanızı sağlar. *<-* operatörü, atama operatörüdür. Burada, veri setimizi okuyup, atama operatörü ile *filmler* isimli bir değişkene atamış olduk.
+`read.csv()`, `read.xlsx()`, `read.table()` gibi fonksiyonlar verinizi çalışma alanınıza almanızı sağlar. 
+*<-* operatörü, atama operatörüdür. Burada, veri setimizi okuyup, atama operatörü ile *filmler* isimli bir değişkene atamış olduk.
 
 Şimdi veri setimize bir bakalım. `head()` fonksiyonu bize veri setimizin ilk 6 gözlemini, `tail()` fonksiyonu son 6 gözlemini veriyor. Ancak *n* argümanını değiştirerek istediğiniz kadar gözlemi getirebilirsiniz:
 
@@ -84,15 +85,15 @@ tail(filmler, n = 3)
 Örneğin veri setinizdeki 13 değişkenle iş yapmak yerine, sadece bazı değişkenleri *seçmek* istiyorsunuz. Kullanacağınız fonksiyon: `select()`
 
 ```{r, warning=FALSE, message=FALSE}
-filmler_ülkeler <- filmler %>% select(country, budget, imdb_score) %>% head(n=3)
-filmler_ülkeler
+filmler_ulkeler <- filmler %>% select(country, budget, imdb_score) %>% head(n=3)
+filmler_ulkeler
 ```
 
 Seçmek istediğiniz kolonların sayı sırasını biliyorsanız sayı değerlerini yazabilir, setinizde istemediğiniz değişkeni önüne eksi (-) yazarak çıkarabilirsiniz:
 
 ```{r, warning=FALSE, message=FALSE}
-filmler_ülkeler <- filmler %>% select(2:6, -4) %>% head(n=3)
-filmler_ülkeler
+filmler_ulkeler <- filmler %>% select(2:6, -4) %>% head(n=3)
+filmler_ulkeler
 ```
 
 Burada yeni bir operatörle karşı karşıyayız: *%>%* 
@@ -123,7 +124,7 @@ filmler_butce <- filmler %>% select(movie_title, imdb_score, budget) %>% arrange
 head(filmler_butce)
 ```
 
-Eğer artan sıralamak istiyorsanız fazladan bir şey yazmanız gerekmiyor, ama azalan sıralamak istiyorsanız:
+Eğer gözlemleri bir (ya da daha fazla) değişkene göre artan sıralamak istiyorsanız fazladan bir şey yazmanız gerekmiyor, ama azalan sıralamak istiyorsanız:
 
 ```{r, warning=FALSE, message=FALSE}
 filmler_butce <- filmler %>% select(movie_title, imdb_score, budget) %>% arrange(desc(budget))
