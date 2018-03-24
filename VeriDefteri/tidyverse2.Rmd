@@ -5,16 +5,16 @@ date: "3/24/2018"
 output: html_document
 ---
 
-Bir önceki [yazımda](http://www.veridefteri.com/2018/03/03/tidyverse/) Tidyverse dünyasında bir giriş yapmıştım. Bize nasıl bir iş akışı ve kolaylık sağladığından bahsetmiştim. Şimdi de sıklıkla kullandığımız `mutate()`, `group_by()` ve `summarise()` fonksiyonlarını, aynı veri setiyle nasıl kullanacağımızı anlatacağım.
+Bir önceki [yazımda](http://www.veridefteri.com/2018/03/03/tidyverse/) Tidyverse dünyasına bir giriş yapmıştım. Bize nasıl bir iş akışı ve kolaylık sağladığından bahsetmiştim. Şimdi de sıklıkla kullandığımız `mutate()`, `group_by()` ve `summarise()` fonksiyonlarını, aynı veri setiyle nasıl kullanacağımızı anlatacağım.
 
-Veri setimizi tekrar çalışma alanımıza yükleyip, yine ilk 5 satırına bir bakalım:
+Veri setimizi tekrar çalışma alanımıza yükleyip, değişkenleri hatırlamak için ilk 3 satırına bir bakalım:
 ```{r, eval = TRUE, warning=FALSE, message=FALSE}
 library(tidyverse)
 filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",") 
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-head(filmler, n = 5)
+head(filmler, n = 3)
 ```
 
 İlk fonksiyonumuz `mutate()`, adı üzerinde bir şeyleri *değiştirmek, dönüştürmek* için kullanacağız. Örneğin veri setimizde *duration* (filmlerin süresi) dakika olarak verilmiş ve bunu saat olarak görmek istiyorsak:
@@ -35,7 +35,7 @@ Bu iki fonksiyonu beraber göstermek istiyorum. İlk olarak yönetmenlerin filml
 ```{r}
 filmler %>% group_by(director_name) %>% 
   summarise(ortalama_puan = round(mean(imdb_score), digits = 2)) %>% 
-  arrange(desc(ortalama_puan))
+  arrange(desc(ortalama_puan)) %>%  head(n = 6)
 ```
 
 Burada ilk önce hangi değişkene göre gruplamak istiyorsak onu `group_by` fonksiyonunun içine yazdık ve ardından `summarise` fonksiyonu ile görmek istediğimiz ortalama_puan değişkenini `mean` fonksiyonu ile hesapladık.
@@ -44,18 +44,32 @@ Başka bir örnek türetelim. Yıllara göre gruplayıp, en yüksek IMDB puanın
 
 ```{r}
 filmler %>% group_by(title_year) %>% 
-  summarise(max_puan = max(imdb_score),max_sure = max(duration)) %>% 
-  arrange(desc(max_puan))
+  summarise(max_puan = max(imdb_score), max_sure = max(duration)) %>% 
+  arrange(desc(max_puan)) %>%  head()
 ```
 
-Bu örnek bize 1994 yılında gösterimdeki filmlerin en yüksek puanını ve en yüksek süresini veriyor.
+Bu örnek bize 1994 yılında gösterimdeki filmlerin en yüksek puanının 9.3 ve en yüksek süresinin 212 dakika olduğunu söylüyor. Ama bu iki değerin *aynı filme ait olduğu anlamına gelmiyor*, buraya dikkat edelim. Bunların hangi filmlere ait olduklarını bilmek istiyorsak da şöyle bir şey deneyebiliriz:
 
+```{r}
+filmler %>% 
+  filter(title_year == 1994, imdb_score == 9.3 | duration == 212)
+```
 
+Son olarak veri setimizde film türlerine göre kaçar film olduğuna bakalım:
 
+```{r}
+filmler %>% group_by(genres) %>% 
+  summarise(film_sayisi = n_distinct(movie_title)) %>%
+  arrange(desc(film_sayisi)) %>% head()
+```
 
+Burada bazı filmler birden fazla yazıldığı için (benzeri olmayan film sayısı 3606) `n_distinct` fonksiyonunu kullandık. Hangi filmlerin 1'den fazla yazıldığına bakmak istiyorsak da aşağıdaki gibi inceleyebiliriz:
 
+```{r}
+filmler %>% group_by(movie_title) %>% 
+  summarize(n = n()) %>%
+  filter(n > 1) %>% 
+  arrange(desc(n)) %>% head()
+```
 
-
-
-
-
+Bir sonraki yazımda `ggplot2` paketiyle bu veriler üzerinden görselleştirme örneklerini anlatacağım.

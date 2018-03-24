@@ -125,29 +125,23 @@ $(document).ready(function () {
 </div>
 
 
-<p>Bir önceki <a href="http://www.veridefteri.com/2018/03/03/tidyverse/">yazımda</a> Tidyverse dünyasında bir giriş yapmıştım. Bize nasıl bir iş akışı ve kolaylık sağladığından bahsetmiştim. Şimdi de sıklıkla kullandığımız <code>mutate()</code>, <code>group_by()</code> ve <code>summarise()</code> fonksiyonlarını, aynı veri setiyle nasıl kullanacağımızı anlatacağım.</p>
-<p>Veri setimizi tekrar çalışma alanımıza yükleyip, yine ilk 5 satırına bir bakalım:</p>
+<p>Bir önceki <a href="http://www.veridefteri.com/2018/03/03/tidyverse/">yazımda</a> Tidyverse dünyasına bir giriş yapmıştım. Bize nasıl bir iş akışı ve kolaylık sağladığından bahsetmiştim. Şimdi de sıklıkla kullandığımız <code>mutate()</code>, <code>group_by()</code> ve <code>summarise()</code> fonksiyonlarını, aynı veri setiyle nasıl kullanacağımızı anlatacağım.</p>
+<p>Veri setimizi tekrar çalışma alanımıza yükleyip, değişkenleri hatırlamak için ilk 3 satırına bir bakalım:</p>
 <pre class="r"><code>library(tidyverse)
 filmler &lt;- read.csv(file = &quot;movies.csv&quot; , header = TRUE, sep = &quot;,&quot;) </code></pre>
-<pre class="r"><code>head(filmler, n = 5)</code></pre>
-<pre><code>##       director_name duration     actor_2_name     gross    actor_1_name
-## 1     James Cameron      178 Joel David Moore 760505847     CCH Pounder
-## 2    Gore Verbinski      169    Orlando Bloom 309404152     Johnny Depp
-## 3        Sam Mendes      148     Rory Kinnear 200074175 Christoph Waltz
-## 4 Christopher Nolan      164   Christian Bale 448130642       Tom Hardy
-## 5    Andrew Stanton      132  Samantha Morton  73058679    Daryl Sabara
-##                                 movie_title         actor_3_name language
-## 1                                   Avatar             Wes Studi  English
-## 2 Pirates of the Caribbean: At World's End        Jack Davenport  English
-## 3                                  Spectre      Stephanie Sigman  English
-## 4                    The Dark Knight Rises  Joseph Gordon-Levitt  English
-## 5                              John Carter          Polly Walker  English
+<pre class="r"><code>head(filmler, n = 3)</code></pre>
+<pre><code>##    director_name duration     actor_2_name     gross    actor_1_name
+## 1  James Cameron      178 Joel David Moore 760505847     CCH Pounder
+## 2 Gore Verbinski      169    Orlando Bloom 309404152     Johnny Depp
+## 3     Sam Mendes      148     Rory Kinnear 200074175 Christoph Waltz
+##                                 movie_title     actor_3_name language
+## 1                                   Avatar         Wes Studi  English
+## 2 Pirates of the Caribbean: At World's End    Jack Davenport  English
+## 3                                  Spectre  Stephanie Sigman  English
 ##   country    budget title_year imdb_score genres
 ## 1     USA 237000000       2009        7.9 Action
 ## 2     USA 300000000       2007        7.1 Action
-## 3      UK 245000000       2015        6.8 Action
-## 4     USA 250000000       2012        8.5 Action
-## 5     USA 263700000       2012        6.6 Action</code></pre>
+## 3      UK 245000000       2015        6.8 Action</code></pre>
 <p>İlk fonksiyonumuz <code>mutate()</code>, adı üzerinde bir şeyleri <em>değiştirmek, dönüştürmek</em> için kullanacağız. Örneğin veri setimizde <em>duration</em> (filmlerin süresi) dakika olarak verilmiş ve bunu saat olarak görmek istiyorsak:</p>
 <pre class="r"><code>filmler_sure &lt;- filmler %&gt;% 
   mutate(duration_hour = round(duration/60, digits = 2)) 
@@ -160,43 +154,74 @@ filmler_sure %&gt;% select(movie_title, duration, duration_hour) %&gt;% head(n=5
 ## 4                    The Dark Knight Rises       164          2.73
 ## 5                              John Carter       132          2.20</code></pre>
 <p>Burada önceki yazımda bahsettiğim zincir (pipe) operatörü ve <code>select</code> fonksiyonunu da tekrar kullanmış olduk.</p>
-<p>İkinci ve üçüncü fonksiyonlarımız ise <code>group_by</code> ve <code>summarise</code>. Belirlediğimiz değişkene/değişkenlere göre gruplama yapmak istiyorsak <code>group_by</code> kullanıyoruz. <code>summarise</code> (veya <code>summarize</code>) ise bize tek bir sayı, nasıl bir özet sayı görmek istiyorsak onu veriyor: ortalama, standard sapma, varyans vb.</p>
+<p>İkinci ve üçüncü fonksiyonlarımız ise <code>group_by</code> ve <code>summarise</code>. Belirlediğimiz değişkene/değişkenlere göre gruplama yapmak istiyorsak <code>group_by</code> kullanıyoruz. <code>summarise</code> (veya <code>summarize</code>) ise bize tek bir sayı, nasıl bir özet sayı görmek istiyorsak onu veriyor: o değişkenin ortalama, standard sapma, varyans, minimum, maksimum vb değerleri olabilir.</p>
 <p>Bu iki fonksiyonu beraber göstermek istiyorum. İlk olarak yönetmenlerin filmlerinin IMDB puanlarının ortalamasına bakmak ve bunu yüksek ortalamadan düşük ortalamaya göre sıralamak istiyorsak:</p>
 <pre class="r"><code>filmler %&gt;% group_by(director_name) %&gt;% 
   summarise(ortalama_puan = round(mean(imdb_score), digits = 2)) %&gt;% 
-  arrange(desc(ortalama_puan))</code></pre>
-<pre><code>## # A tibble: 1,647 x 2
-##    director_name         ortalama_puan
-##    &lt;fct&gt;                         &lt;dbl&gt;
-##  1 Charles Chaplin                8.60
-##  2 Tony Kaye                      8.60
-##  3 Alfred Hitchcock               8.50
-##  4 Damien Chazelle                8.50
-##  5 Christopher Nolan              8.43
-##  6 Marius A. Markevicius          8.40
-##  7 Mel Gibson                     8.40
-##  8 Richard Marquand               8.40
-##  9 Sergio Leone                   8.40
-## 10 Billy Wilder                   8.30
-## # ... with 1,637 more rows</code></pre>
+  arrange(desc(ortalama_puan)) %&gt;%  head(n = 6)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   director_name         ortalama_puan
+##   &lt;fct&gt;                         &lt;dbl&gt;
+## 1 Charles Chaplin                8.60
+## 2 Tony Kaye                      8.60
+## 3 Alfred Hitchcock               8.50
+## 4 Damien Chazelle                8.50
+## 5 Christopher Nolan              8.43
+## 6 Marius A. Markevicius          8.40</code></pre>
 <p>Burada ilk önce hangi değişkene göre gruplamak istiyorsak onu <code>group_by</code> fonksiyonunun içine yazdık ve ardından <code>summarise</code> fonksiyonu ile görmek istediğimiz ortalama_puan değişkenini <code>mean</code> fonksiyonu ile hesapladık.</p>
 <p>Başka bir örnek türetelim. Yıllara göre gruplayıp, en yüksek IMDB puanına ve film süresine bakalım:</p>
 <pre class="r"><code>filmler %&gt;% group_by(title_year) %&gt;% 
-  summarise(max(imdb_score), max(duration))</code></pre>
-<pre><code>## # A tibble: 72 x 3
-##    title_year `max(imdb_score)` `max(duration)`
-##         &lt;int&gt;             &lt;dbl&gt;           &lt;dbl&gt;
-##  1       1929              6.30           100  
-##  2       1933              7.70            89.0
-##  3       1935              7.80            81.0
-##  4       1936              8.60            87.0
-##  5       1937              7.70            83.0
-##  6       1939              8.20           226  
-##  7       1940              7.80           120  
-##  8       1946              8.10           172  
-##  9       1947              7.70            92.0
-## 10       1948              7.10           102  
-## # ... with 62 more rows</code></pre>
+  summarise(max_puan = max(imdb_score), max_sure = max(duration)) %&gt;% 
+  arrange(desc(max_puan)) %&gt;%  head()</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   title_year max_puan max_sure
+##        &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1       1994     9.30      212
+## 2       1972     9.20      175
+## 3       1974     9.00      220
+## 4       2008     9.00      166
+## 5       1993     8.90      330
+## 6       2003     8.90      280</code></pre>
+<p>Bu örnek bize 1994 yılında gösterimdeki filmlerin en yüksek puanının 9.3 ve en yüksek süresinin 212 dakika olduğunu söylüyor. Ama bu iki değerin <em>aynı filme ait olduğu anlamına gelmiyor</em>, buraya dikkat edelim. Bunların hangi filmlere ait olduklarını bilmek istiyorsak da şöyle bir şey deneyebiliriz:</p>
+<pre class="r"><code>filmler %&gt;% 
+  filter(title_year == 1994, imdb_score == 9.3 | duration == 212)</code></pre>
+<pre><code>##     director_name duration     actor_2_name    gross   actor_1_name
+## 1 Lawrence Kasdan      212 Catherine O'Hara 25052000   Dennis Quaid
+## 2  Frank Darabont      142   Jeffrey DeMunn 28341469 Morgan Freeman
+##                 movie_title        actor_3_name language country   budget
+## 1               Wyatt Earp  Isabella Rossellini  English     USA 63000000
+## 2 The Shawshank Redemption           Bob Gunton  English     USA 25000000
+##   title_year imdb_score    genres
+## 1       1994        6.6 Adventure
+## 2       1994        9.3     Crime</code></pre>
+<p>Son olarak veri setimizde film türlerine göre kaçar film olduğuna bakalım:</p>
+<pre class="r"><code>filmler %&gt;% group_by(genres) %&gt;% 
+  summarise(film_sayisi = n_distinct(movie_title)) %&gt;%
+  arrange(desc(film_sayisi)) %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   genres    film_sayisi
+##   &lt;fct&gt;           &lt;int&gt;
+## 1 Comedy            989
+## 2 Action            897
+## 3 Drama             614
+## 4 Adventure         356
+## 5 Crime             241
+## 6 Biography         201</code></pre>
+<p>Burada bazı filmler birden fazla yazıldığı için (benzeri olmayan film sayısı 3606) <code>n_distinct</code> fonksiyonunu kullandık. Hangi filmlerin 1’den fazla yazıldığına bakmak istiyorsak da aşağıdaki gibi inceleyebiliriz:</p>
+<pre class="r"><code>filmler %&gt;% group_by(movie_title) %&gt;% 
+  summarize(n = n()) %&gt;%
+  filter(n &gt; 1) %&gt;% 
+  arrange(desc(n)) %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   movie_title                   n
+##   &lt;fct&gt;                     &lt;int&gt;
+## 1 Halloween                     3
+## 2 Home                          3
+## 3 King Kong                     3
+## 4 Pan                           3
+## 5 The Fast and the Furious      3
+## 6 Victor Frankenstein           3</code></pre>
+<p>Bir sonraki yazımda <code>ggplot2</code> paketiyle bu veriler üzerinden görselleştirme örneklerini anlatacağım.</p>
 
 
 
