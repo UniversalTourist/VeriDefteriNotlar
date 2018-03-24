@@ -155,7 +155,7 @@ filmler_sure %&gt;% select(movie_title, duration, duration_hour) %&gt;% head(n=5
 ## 5                              John Carter       132          2.20</code></pre>
 <p>Burada önceki yazımda bahsettiğim zincir (pipe) operatörü ve <code>select</code> fonksiyonunu da tekrar kullanmış olduk.</p>
 <p>İkinci ve üçüncü fonksiyonlarımız ise <code>group_by</code> ve <code>summarise</code>. Belirlediğimiz değişkene/değişkenlere göre gruplama yapmak istiyorsak <code>group_by</code> kullanıyoruz. <code>summarise</code> (veya <code>summarize</code>) ise bize tek bir sayı, nasıl bir özet sayı görmek istiyorsak onu veriyor: o değişkenin ortalama, standard sapma, varyans, minimum, maksimum vb değerleri olabilir.</p>
-<p>Bu iki fonksiyonu beraber göstermek istiyorum. İlk olarak yönetmenlerin filmlerinin IMDB puanlarının ortalamasına bakmak ve bunu yüksek ortalamadan düşük ortalamaya göre sıralamak istiyorsak:</p>
+<p>Bu iki fonksiyonu beraber göstermek istiyorum. İlk olarak yönetmenlerin filmlerinin IMDB puanlarının ortalamasına bakmak ve bunu ortalama puanı yüksek olandan düşük olana doğru sıralamak istiyorsak:</p>
 <pre class="r"><code>filmler %&gt;% group_by(director_name) %&gt;% 
   summarise(ortalama_puan = round(mean(imdb_score), digits = 2)) %&gt;% 
   arrange(desc(ortalama_puan)) %&gt;%  head(n = 6)</code></pre>

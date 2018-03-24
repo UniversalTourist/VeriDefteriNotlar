@@ -30,7 +30,7 @@ Burada önceki yazımda bahsettiğim zincir (pipe) operatörü ve `select` fonks
 
 İkinci ve üçüncü fonksiyonlarımız ise `group_by` ve `summarise`. Belirlediğimiz değişkene/değişkenlere göre gruplama yapmak istiyorsak `group_by` kullanıyoruz. `summarise` (veya `summarize`) ise bize tek bir sayı, nasıl bir özet sayı görmek istiyorsak onu veriyor: o değişkenin ortalama, standard sapma, varyans, minimum, maksimum vb değerleri olabilir.
 
-Bu iki fonksiyonu beraber göstermek istiyorum. İlk olarak yönetmenlerin filmlerinin IMDB puanlarının ortalamasına bakmak ve bunu yüksek ortalamadan düşük ortalamaya göre sıralamak istiyorsak:
+Bu iki fonksiyonu beraber göstermek istiyorum. İlk olarak yönetmenlerin filmlerinin IMDB puanlarının ortalamasına bakmak ve bunu ortalama puanı yüksek olandan düşük olana doğru sıralamak istiyorsak:
 
 ```{r}
 filmler %>% group_by(director_name) %>% 
