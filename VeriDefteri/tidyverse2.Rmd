@@ -72,4 +72,4 @@ filmler %>% group_by(movie_title) %>%
   arrange(desc(n)) %>% head()
 ```
 
-Bir sonraki yazımda `ggplot2` paketiyle bu veriler üzerinden görselleştirme örneklerini anlatacağım.
+Bir sonraki yazımda `ggplot2` paketiyle bu veriler üzerinden görselleştirme örnekleri yapacağım.
