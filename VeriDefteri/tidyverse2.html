@@ -156,6 +156,16 @@ head(filmler_sure, n = 3) </code></pre>
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["movie_title"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["duration"],"name":[2],"type":["int"],"align":["right"]},{"label":["duration_hour"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Avatar","2":"178","3":"2.97","_rn_":"1"},{"1":"Pirates of the Caribbean: At World's End","2":"169","3":"2.82","_rn_":"2"},{"1":"Spectre","2":"148","3":"2.47","_rn_":"3"},{"1":"The Dark Knight Rises","2":"164","3":"2.73","_rn_":"4"},{"1":"John Carter","2":"132","3":"2.20","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
+<p>Mutate fonksiyonunun başka güzelliklerine de değinmek istiyorum. Örneğin veri setimizdeki <code>budget</code> ve <code>gross</code> değişkenlerinin para ile ilgili değişkenler olduğunu, yanlarına ekleyeceğim <code>$</code> sembolü ile özellikle vurgulamak istiyorum. <code>mutate_if</code> **(*)** fonksiyonu “değişkenlerim nümerik ise” diye kontrol edecek ve sonrasında <code>scales</code> paketinin <code>dollar_format</code> fonksiyonu ile eğer nümerik ise başlarına $ sembolü koymasını sağlayacak:</p>
+<pre class="r"><code>filmler %&gt;% 
+  select(movie_title, director_name, budget, gross) %&gt;% 
+  mutate_if(~is.numeric(.), scales::dollar_format(prefix = &quot;$&quot;)) %&gt;% 
+  head()</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["movie_title"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["director_name"],"name":[2],"type":["fctr"],"align":["left"]},{"label":["budget"],"name":[3],"type":["chr"],"align":["left"]},{"label":["gross"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Avatar","2":"James Cameron","3":"$237,000,000","4":"$760,505,847","_rn_":"1"},{"1":"Pirates of the Caribbean: At World's End","2":"Gore Verbinski","3":"$300,000,000","4":"$309,404,152","_rn_":"2"},{"1":"Spectre","2":"Sam Mendes","3":"$245,000,000","4":"$200,074,175","_rn_":"3"},{"1":"The Dark Knight Rises","2":"Christopher Nolan","3":"$250,000,000","4":"$448,130,642","_rn_":"4"},{"1":"John Carter","2":"Andrew Stanton","3":"$263,700,000","4":"$73,058,679","_rn_":"5"},{"1":"Spider-Man 3","2":"Sam Raimi","3":"$258,000,000","4":"$336,530,303","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <p>İkinci ve üçüncü fonksiyonlarımız ise <code>group_by</code> ve <code>summarise</code>. Belirlediğimiz değişkene/değişkenlere göre gruplama yapmak istiyorsak <code>group_by</code> kullanıyoruz. <code>summarise</code> (veya <code>summarize</code>) ise bize görmek istediğimiz özet bir sayıyı veriyor. Özet sayı, değişkenin ortalama, standard sapma, varyans, minimum, maksimum vb değerleri olabilir.</p>
 <p>Bu iki fonksiyonu beraber göstermek istiyorum. İlk olarak yönetmenlerin filmlerinin IMDB puanlarının ortalamasına bakmak ve bunu ortalama puanı yüksek olandan düşük olana doğru sıralamak istiyorsak:</p>
 <pre class="r"><code>filmler %&gt;% group_by(director_name) %&gt;% 
@@ -205,6 +215,7 @@ head(filmler_sure, n = 3) </code></pre>
   </script>
 </div>
 <p>Bir sonraki yazımda <code>ggplot2</code> paketiyle bu veriler üzerinden görselleştirme örnekleri yapacağım.</p>
+<p>**(*)** <code>mutate_at</code>, <code>mutate_if</code>, <code>mutate_all</code>, <code>summarise_at</code>, <code>summarise_if</code>, <code>summarise_all</code> fonksiyonlarına mutlaka bakmanızı tavsiye ederim.</p>
 
 
 

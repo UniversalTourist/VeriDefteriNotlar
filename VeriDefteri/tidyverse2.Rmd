@@ -19,7 +19,7 @@ filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",")
 head(filmler, n = 3)
 ```
 
-İlk fonksiyonumuz `mutate()`, adı üzerinde bir şeyleri *değiştirmek, dönüştürmek* için kullanacağız. Mutate fonksiyonu her değer için bir dönüşüm yapıyor ve bunu sizin isimlendireceğiniz yeni bir değişkene atıyor. Örneğin veri setimizde *duration* (filmlerin süresi) dakika olarak verilmiş ve bunu saat olarak da görmek istediğimizi düşünelim. `duration_hour` diye isimlendirdiğimiz yeni bir değişken oluşturup, dakikayı saate çeviriyoruz ve virgülden sonra 2 basamağı alacak şekilde gösteriyoruz. Oluşturduğum `duration_hour` değişkeni de veri setimin son değişkeni olacak şekilde yerleşiyor:
+İlk fonksiyonumuz `mutate()`, adı üzerinde bir şeyleri *değiştirmek, dönüştürmek* için kullanacağız. Mutate fonksiyonu her değer için bir dönüşüm yapıyor ve bunu sizin isimlendireceğiniz yeni bir değişkene atıyor. Örneğin veri setimizde *duration* (filmlerin süresi) dakika olarak verilmiş ve bunu saat olarak da görmek istediğimizi düşünelim. `duration_hour` diye isimlendirdiğimiz yeni bir değişken oluşturup, dakikayı saate çeviriyoruz ve virgülden sonra 2 basamağı alacak şekilde gösteriyoruz. Oluşturduğum `duration_hour` değişkeni de veri setimin son değişkeni olacak şekilde ekleniyor:
 
 ```{r}
 filmler_sure <- filmler %>% 
@@ -34,6 +34,16 @@ filmler_sure %>%
   select(movie_title, duration, duration_hour) %>% 
   head(n=5) 
 ```
+
+Mutate fonksiyonunun başka güzelliklerine de değinmek istiyorum. Örneğin veri setimizdeki `budget` ve `gross` değişkenlerinin para ile ilgili değişkenler olduğunu, yanlarına ekleyeceğim `$` sembolü ile özellikle vurgulamak istiyorum. `mutate_if` **(*)** fonksiyonu "değişkenlerim nümerik ise" diye kontrol edecek ve sonrasında `scales` paketinin `dollar_format` fonksiyonu ile eğer nümerik ise başlarına $ sembolü koymasını sağlayacak:
+
+```{r}
+filmler %>% 
+  select(movie_title, director_name, budget, gross) %>% 
+  mutate_if(~is.numeric(.), scales::dollar_format(prefix = "$")) %>% 
+  head()
+```
+
 
 İkinci ve üçüncü fonksiyonlarımız ise `group_by` ve `summarise`. Belirlediğimiz değişkene/değişkenlere göre gruplama yapmak istiyorsak `group_by` kullanıyoruz. `summarise` (veya `summarize`) ise bize görmek istediğimiz özet bir sayıyı  veriyor. Özet sayı, değişkenin ortalama, standard sapma, varyans, minimum, maksimum vb değerleri olabilir.
 
@@ -81,3 +91,5 @@ filmler %>% group_by(movie_title) %>%
 ```
 
 Bir sonraki yazımda `ggplot2` paketiyle bu veriler üzerinden görselleştirme örnekleri yapacağım.
+
+**(*)** `mutate_at`, `mutate_if`, `mutate_all`, `summarise_at`, `summarise_if`, `summarise_all` fonksiyonlarına mutlaka bakmanızı tavsiye ederim.
