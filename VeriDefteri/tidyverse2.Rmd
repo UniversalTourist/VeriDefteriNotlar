@@ -2,7 +2,9 @@
 title: "Tidyverse-2"
 author: "Hazel Kavili"
 date: "3/24/2018"
-output: html_document
+output: 
+  html_document:
+    df_print: paged
 ---
 
 Bir önceki [yazımda](http://www.veridefteri.com/2018/03/03/tidyverse/) Tidyverse dünyasına bir giriş yapmıştım. Bize nasıl bir iş akışı ve kolaylık sağladığından bahsetmiştim. Şimdi de sıklıkla kullandığımız `mutate()`, `group_by()` ve `summarise()` fonksiyonlarını, aynı veri setiyle nasıl kullanacağımızı anlatacağım.
@@ -17,25 +19,30 @@ filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",")
 head(filmler, n = 3)
 ```
 
-İlk fonksiyonumuz `mutate()`, adı üzerinde bir şeyleri *değiştirmek, dönüştürmek* için kullanacağız. Örneğin veri setimizde *duration* (filmlerin süresi) dakika olarak verilmiş ve bunu saat olarak görmek istiyorsak:
+İlk fonksiyonumuz `mutate()`, adı üzerinde bir şeyleri *değiştirmek, dönüştürmek* için kullanacağız. Mutate fonksiyonu her değer için bir dönüşüm yapıyor ve bunu sizin isimlendireceğiniz yeni bir değişkene atıyor. Örneğin veri setimizde *duration* (filmlerin süresi) dakika olarak verilmiş ve bunu saat olarak da görmek istediğimizi düşünelim. `duration_hour` diye isimlendirdiğimiz yeni bir değişken oluşturup, dakikayı saate çeviriyoruz ve virgülden sonra 2 basamağı alacak şekilde gösteriyoruz. Oluşturduğum `duration_hour` değişkeni de veri setimin son değişkeni olacak şekilde yerleşiyor:
 
 ```{r}
 filmler_sure <- filmler %>% 
   mutate(duration_hour = round(duration/60, digits = 2)) 
 
-filmler_sure %>% select(movie_title, duration, duration_hour) %>% head(n=5)
+head(filmler_sure, n = 3) 
 ```
 
-Burada önceki yazımda bahsettiğim zincir (pipe) operatörü ve `select` fonksiyonunu da tekrar kullanmış olduk.
+Burada önceki yazımda bahsettiğim zincir (pipe) operatörü ve `select` fonksiyonunu da tekrar kullanalım ve sadece `movie_title`, `duration` ve `duration_hour` değişkenlerini seçelim ve ilk 5 gözlemi inceleyelim: 
+```{r}
+filmler_sure %>% 
+  select(movie_title, duration, duration_hour) %>% 
+  head(n=5) 
+```
 
-İkinci ve üçüncü fonksiyonlarımız ise `group_by` ve `summarise`. Belirlediğimiz değişkene/değişkenlere göre gruplama yapmak istiyorsak `group_by` kullanıyoruz. `summarise` (veya `summarize`) ise bize tek bir sayı, nasıl bir özet sayı görmek istiyorsak onu veriyor: o değişkenin ortalama, standard sapma, varyans, minimum, maksimum vb değerleri olabilir.
+İkinci ve üçüncü fonksiyonlarımız ise `group_by` ve `summarise`. Belirlediğimiz değişkene/değişkenlere göre gruplama yapmak istiyorsak `group_by` kullanıyoruz. `summarise` (veya `summarize`) ise bize görmek istediğimiz özet bir sayıyı  veriyor. Özet sayı, değişkenin ortalama, standard sapma, varyans, minimum, maksimum vb değerleri olabilir.
 
 Bu iki fonksiyonu beraber göstermek istiyorum. İlk olarak yönetmenlerin filmlerinin IMDB puanlarının ortalamasına bakmak ve bunu ortalama puanı yüksek olandan düşük olana doğru sıralamak istiyorsak:
 
 ```{r}
 filmler %>% group_by(director_name) %>% 
   summarise(ortalama_puan = round(mean(imdb_score), digits = 2)) %>% 
-  arrange(desc(ortalama_puan)) %>%  head(n = 6)
+  arrange(desc(ortalama_puan)) %>%  head()
 ```
 
 Burada ilk önce hangi değişkene göre gruplamak istiyorsak onu `group_by` fonksiyonunun içine yazdık ve ardından `summarise` fonksiyonu ile görmek istediğimiz ortalama_puan değişkenini `mean` fonksiyonu ile hesapladık.
@@ -45,14 +52,15 @@ Başka bir örnek türetelim. Yıllara göre gruplayıp, en yüksek IMDB puanın
 ```{r}
 filmler %>% group_by(title_year) %>% 
   summarise(max_puan = max(imdb_score), max_sure = max(duration)) %>% 
-  arrange(desc(max_puan)) %>%  head()
+  arrange(desc(max_puan)) %>%  
+  head()
 ```
 
 Bu örnek bize 1994 yılında gösterimdeki filmlerin en yüksek puanının 9.3 ve en yüksek süresinin 212 dakika olduğunu söylüyor. Ama bu iki değerin *aynı filme ait olduğu anlamına gelmiyor*, buraya dikkat edelim. Bunların hangi filmlere ait olduklarını bilmek istiyorsak da şöyle bir şey deneyebiliriz:
 
-```{r}
+```{r, kable, results = 'asis'}
 filmler %>% 
-  filter(title_year == 1994, imdb_score == 9.3 | duration == 212)
+  filter(title_year == 1994, imdb_score == 9.3 | duration == 212) 
 ```
 
 Son olarak veri setimizde film türlerine göre kaçar film olduğuna bakalım:
@@ -63,7 +71,7 @@ filmler %>% group_by(genres) %>%
   arrange(desc(film_sayisi)) %>% head()
 ```
 
-Burada bazı filmler birden fazla yazıldığı için (benzeri olmayan film sayısı 3606) `n_distinct` fonksiyonunu kullandık. Hangi filmlerin 1'den fazla yazıldığına bakmak istiyorsak da aşağıdaki gibi inceleyebiliriz:
+Burada bazı filmler birden fazla yazıldığı için (benzeri olmayan film sayısı 3606) `n_distinct` fonksiyonunu kullandık. Hangi filmlerin birden fazla yazıldığına bakmak istiyorsak da aşağıdaki gibi inceleyebiliriz:
 
 ```{r}
 filmler %>% group_by(movie_title) %>% 
