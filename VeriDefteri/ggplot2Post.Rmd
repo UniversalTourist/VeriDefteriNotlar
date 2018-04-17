@@ -1,0 +1,39 @@
+---
+title: "ggplot2 ile Veri Görselleştirme"
+author: "Hazel Kavili"
+date: "4/17/2018"
+output: html_document
+---
+
+Şu anda R dünyasında kullanılan 2 tür grafik (plot) yapma sistemi var: "base graphics" (R'ın kendisiyle birlikte gelen, temel plot yapma fonksiyonları) ve "ggplot2" (grammer of graphics). İlk başta biraz karışık gözükmesi çok normal, ama alıştığınız zaman ggplot2 ile çok hızlı bir şekilde güzel grafikler elde edebiliyorsunuz.
+
+Ben ggplot2'nun plot yapma yöntemini, cümle kurmaya benzetiyorum: Özne ve yükleme kesinlikle ihtiyacım var, nesneler ve zarfları ise gerektiği zaman kullanıyorum. Bunları yan yana getirdiğimde ise anlatmak istediklerimi söylemiş oluyorum.
+
+**Grammer of Graphics** dendiğinde de, iki önemli konsept öne çıkıyor: 
+
+1. **aes** (*aesthetics*): verinin görselleştirilecek olan değişkenlerini belirtiyoruz (örneğin x ve y aksislerinde görmek istediklerimiz). Bunlar olmazsa olmaz. 
+2. **geom** (*geometry*): verimizin tipine uygun olan grafik tipi (histogram, bar, çizgi grafik, saçılım grafiği, radar grafik vb.)
+
+Geriye kalan işlemler -örneğin renklendirmeler, sembol, etiket, başlık eklemek, bazı özel değerlerin gösterimi- grafiğinizi hem derdini anlatan hem de göze hitap eden bir hale getirecektir. 
+
+Önce, bugünkü yazıda kullanacağımız kütüphaneleri ve veri setimizi yükleyelim:
+```{r, eval = FALSE, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r, eval = TRUE, warning=FALSE, message=FALSE}
+filmler <- read.csv(file = "movies.csv" , header = TRUE, sep = ",") 
+```
+
+```{r}
+head(filmler)
+```
+
+
+
+
+
+
+
+
